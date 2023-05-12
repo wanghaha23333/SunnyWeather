@@ -1,6 +1,7 @@
 package com.sunnyweather.android.ui.place
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -15,12 +16,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sunnyweather.android.R
 import com.sunnyweather.android.databinding.FragmentPlaceBinding
-
+import com.sunnyweather.android.ui.weather.WeatherActivity
 class PlaceFragment : Fragment() {
 
     // 使用懒加载技术来获取 PlaceViewModel 的实例
     // 这种写法允许在整个类中随时使用 viewModel 这个变量，而不用关心它何时初始化、是否为空等前提条件
-    private val viewModel by lazy {
+    val viewModel by lazy {
         ViewModelProvider(this).get(PlaceViewModel::class.java)
     }
 
@@ -43,6 +44,19 @@ class PlaceFragment : Fragment() {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         Log.d("PlaceFragment", "onViewStateRestored")
+
+        if (viewModel.isPlaceSaved()) {
+            val place = viewModel.getSavedPlace()
+            val intent = Intent(context, WeatherActivity::class.java).apply {
+                putExtra("location_lng", place.location.lng)
+                putExtra("location_lat", place.location.lat)
+                putExtra("place_name", place.name)
+            }
+            startActivity(intent)
+            activity?.finish()
+            return
+        }
+
 
         // 给 RecyclerView 设置了 LayoutManager 和适配器
         // 并使用 PlaceViewModel 中的 placeList 集合作为数据源
@@ -93,9 +107,5 @@ class PlaceFragment : Fragment() {
                 result.exceptionOrNull()?.printStackTrace()
             }
         })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 }
