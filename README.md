@@ -5,4 +5,10 @@ App 界面如下：
 
 <img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlace.jpg" width=30%> <img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/showSearchPlace.jpg" width=30%> <img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weather.jpg" width=30%> <img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlaceWeather.jpg" width=30%>
 
+
 ### 项目架构示意图：
+
+<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/SunnyWeather 架构示意图.jpg" width=50%>
+
+### 新功能添加中...
+新增城市管理功能
