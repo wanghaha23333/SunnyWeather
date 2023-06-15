@@ -27,7 +27,7 @@ import java.util.*
 class WeatherActivity : AppCompatActivity() {
 
     val viewModel by lazy {
-        ViewModelProvider(this).get(WeatherViewModel::class.java)
+        ViewModelProvider(this)[WeatherViewModel::class.java]
     }
 
     lateinit var binding: ActivityWeatherBinding
@@ -121,9 +121,8 @@ class WeatherActivity : AppCompatActivity() {
             val simpleDataFormat = SimpleDateFormat("MM-dd", Locale.getDefault())
             Log.d("WeatherActivity", "skycon = $skycon")
             val dataInfoStr = when(i) {
-                0 -> "昨天 ${simpleDataFormat.format(skycon.date)}"
-                1 -> "今天 ${simpleDataFormat.format(skycon.date)}"
-                2 -> "明天 ${simpleDataFormat.format(skycon.date)}"
+                0 -> "今天 ${simpleDataFormat.format(skycon.date)}"
+                1 -> "明天 ${simpleDataFormat.format(skycon.date)}"
                 else -> "${getDayOfWeek(skycon.date)} ${simpleDataFormat.format(skycon.date)}"
             }
             dateInfo.text = dataInfoStr
