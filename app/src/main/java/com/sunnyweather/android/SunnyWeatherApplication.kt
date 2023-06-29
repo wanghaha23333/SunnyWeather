@@ -9,6 +9,8 @@ class SunnyWeatherApplication : Application() {
     companion object {
         const val TOKEN = "CNdCTLQlwQRFPbQc"
 
+        var rowId: Long = -1
+
         @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
     }

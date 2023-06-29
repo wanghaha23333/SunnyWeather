@@ -35,7 +35,7 @@ class PlaceFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         Log.d("PlaceFragment", "onCreateView load fragment_place")
         binding = FragmentPlaceBinding.inflate(inflater, container, false)
         return binding.root
@@ -46,18 +46,23 @@ class PlaceFragment : Fragment() {
         super.onViewStateRestored(savedInstanceState)
         Log.d("PlaceFragment", "onViewStateRestored")
 
-        if (activity is MainActivity && viewModel.isPlaceSaved()) {
-            val place = viewModel.getSavedPlace()
-            val intent = Intent(context, WeatherActivity::class.java).apply {
-                putExtra("location_lng", place.location.lng)
-                putExtra("location_lat", place.location.lat)
-                putExtra("place_name", place.name)
-            }
-            startActivity(intent)
-            activity?.finish()
-            return
-        }
+        val strIntent = activity?.intent?.getStringExtra("searchPlace")
+        Log.d("PlaceFragment", "strIntent = $strIntent")
 
+//        if (strIntent != null) {
+            if (activity is MainActivity && viewModel.isPlaceSaved() && strIntent != "searchPlace") {
+                Log.d("PlaceFragment", "is Place Saved")
+                val place = viewModel.getSavedPlace()
+                val intent = Intent(context, WeatherActivity::class.java).apply {
+                    putExtra("location_lng", place.location.lng)
+                    putExtra("location_lat", place.location.lat)
+                    putExtra("place_name", place.name)
+                }
+                startActivity(intent)
+                activity?.finish()
+                return
+            }
+//        }
 
         // 给 RecyclerView 设置了 LayoutManager 和适配器
         // 并使用 PlaceViewModel 中的 placeList 集合作为数据源

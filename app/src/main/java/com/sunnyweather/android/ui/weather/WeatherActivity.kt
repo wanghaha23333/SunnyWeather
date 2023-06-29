@@ -1,6 +1,8 @@
 package com.sunnyweather.android.ui.weather
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +19,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.sunnyweather.android.MainActivity
 import com.sunnyweather.android.R
+import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.databinding.ActivityWeatherBinding
 import com.sunnyweather.android.logic.model.Weather
 import com.sunnyweather.android.logic.model.getSky
@@ -31,7 +36,9 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     lateinit var binding: ActivityWeatherBinding
+    lateinit var adapter: PlaceManageAdapter
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWeatherBinding.inflate(layoutInflater)
@@ -40,17 +47,8 @@ class WeatherActivity : AppCompatActivity() {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         window.statusBarColor = Color.TRANSPARENT
 
-        if (viewModel.locationLng.isEmpty()) {
-            viewModel.locationLng = intent.getStringExtra("location_lng") ?: ""
-        }
-
-        if (viewModel.locationLat.isEmpty()) {
-            viewModel.locationLat = intent.getStringExtra("location_lat") ?: ""
-        }
-
-        if (viewModel.placeName.isEmpty()) {
-            viewModel.placeName = intent.getStringExtra("place_name") ?: ""
-        }
+        Log.d("WeatherActivity", "onCreate")
+        decidePlaceOpen()
 
         viewModel.weatherLiveData.observe(this) { result ->
             val weather = result.getOrNull()
@@ -70,7 +68,22 @@ class WeatherActivity : AppCompatActivity() {
         }
 
         binding.includeNow.navBtn.setOnClickListener {
+            Log.d("WeatherActivity", "home btn pressed")
+            adapter.notifyDataSetChanged()
             binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        binding.placeManageReV.layoutManager = LinearLayoutManager(this)
+        viewModel.loadPlace()
+
+        viewModel.loadPlaceLiveData.observe(this) { result ->
+            val placeList = result.getOrNull()
+            if (placeList != null) {
+                Log.d("WeatherActivity", "load places")
+                viewModel.placeList = placeList
+                adapter = PlaceManageAdapter(this, viewModel.placeList!!)
+                binding.placeManageReV.adapter = adapter
+            }
         }
 
         binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
@@ -85,9 +98,60 @@ class WeatherActivity : AppCompatActivity() {
                 manager.hideSoftInputFromWindow(drawerView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
             }
         })
+
+        binding.placeSearchBtn.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("searchPlace", "searchPlace")
+            startActivity(intent)
+            binding.drawerLayout.closeDrawers()
+        }
     }
 
-    fun refreshWeather() {
+    override fun onResume() {
+        super.onResume()
+        Log.d("WeatherActivity", "onResume")
+        decidePlaceOpen() // 需要定义一个变量，如果在 onCreate() 方法中执行过这个方法，onResume() 中就无须再执行这个方法
+//        refreshWeather()
+    }
+
+    fun decidePlaceOpen() {
+        Log.d("WeatherActivity", "insertId = ${SunnyWeatherApplication.rowId}")
+        if (SunnyWeatherApplication.rowId == -1L) {
+//            if (viewModel.locationLng.isEmpty()) {
+                viewModel.locationLng = intent.getStringExtra("location_lng") ?: ""
+//            }
+
+//            if (viewModel.locationLat.isEmpty()) {
+                viewModel.locationLat = intent.getStringExtra("location_lat") ?: ""
+//            }
+
+//            if (viewModel.placeName.isEmpty()) {
+                viewModel.placeName = intent.getStringExtra("place_name") ?: ""
+//            }
+            Log.d("WeatherActivity", "decidePlaceOpen placeName = ${viewModel.placeName}")
+            refreshWeather()
+        } else { // 说明是从 AddPlaceActivity 跳转过来的
+            Log.d("WeatherActivity", "from AddPlaceActivity")
+            viewModel.loadPlace()
+            viewModel.findPlaceById(SunnyWeatherApplication.rowId)
+            viewModel.findPlaceById.observe(this) { result ->
+                val placeManage = result.getOrNull()
+                if (placeManage != null) {
+                    Log.d("WeatherActivity", "place name = ${placeManage.place}")
+                    viewModel.locationLng = placeManage.lng
+                    viewModel.locationLat = placeManage.lat
+                    viewModel.placeName = placeManage.place
+                    refreshWeather()
+                }
+            }
+        }
+
+        // 跳转结束后，将 insertId 置为初始值
+        SunnyWeatherApplication.rowId = -1L
+    }
+
+    private fun refreshWeather() {
+        Log.d("WeatherActivity", "refreshWeather, place = ${viewModel.placeName}")
         viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
         binding.swipeRefresh.isRefreshing = true
     }

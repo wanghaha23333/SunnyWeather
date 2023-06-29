@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -38,20 +39,63 @@
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <FrameLayout
+<!--    <FrameLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="start"-->
+<!--        android:clickable="true"-->
+<!--        android:focusable="true"-->
+<!--        android:background="@color/design_default_color_primary">-->
+<!--        -->
+<!--        <fragment-->
+<!--            android:id="@+id/placeFragment"-->
+<!--            android:name="com.sunnyweather.android.ui.place.PlaceFragment"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginTop="25dp"/>-->
+<!--        -->
+<!--    </FrameLayout>-->
+
+    <RelativeLayout
+        android:id="@+id/managePlace"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="@color/design_default_color_primary">
-        
-        <fragment
-            android:id="@+id/placeFragment"
-            android:name="com.sunnyweather.android.ui.place.PlaceFragment"
+        android:background="#fff">
+
+        <TextView
+            android:id="@+id/placeManage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="4dp"
+            android:text="@string/placeManage"
+            android:textSize="20sp"
+            android:textColor="@color/design_default_color_primary"
+            tools:ignore="RelativeOverlap" />
+
+        <Button
+            android:id="@+id/placeSearchBtn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/placeManage"
+            android:background="@drawable/bg_search" />
+
+<!--        <FrameLayout-->
+<!--            android:id="@+id/searchFrameLayout"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/placeSearch">-->
+
+<!--        </FrameLayout>-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/placeManageReV"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="25dp"/>
-        
-    </FrameLayout>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/placeManage"/>
+
+    </RelativeLayout>
+
 </androidx.drawerlayout.widget.DrawerLayout>
