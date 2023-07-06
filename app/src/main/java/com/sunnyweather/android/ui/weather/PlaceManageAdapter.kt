@@ -1,5 +1,6 @@
 package com.sunnyweather.android.ui.weather
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -37,11 +38,33 @@ class PlaceManageAdapter(val weatherActivity: WeatherActivity, val placeManageLi
             val placeManage = placeManageList[position]
             Log.d(TAG, "position = $position, placeName = ${placeManage.place}")
             Toast.makeText(parent.context, "position = $position, placeName = ${placeManage.place}", Toast.LENGTH_SHORT).show()
-            // 暂不处理
+
             SunnyWeatherApplication.rowId = (position + 1).toLong()
             val intent = Intent(parent.context, WeatherActivity::class.java)
             weatherActivity.startActivity(intent)
             weatherActivity.binding.drawerLayout.closeDrawers()
+        }
+
+        // 长按删除
+        holder.itemView.setOnLongClickListener {
+            val position = holder.adapterPosition
+            val placeManage = placeManageList[position]
+
+            AlertDialog.Builder(parent.context).apply {
+                setTitle("删除地点")
+                setMessage("是否删除地点：${placeManage.place}？")
+                setCancelable(false)
+                setPositiveButton("是") { dialog, which ->
+                    weatherActivity.viewModel.deletePlace(placeManage)
+                    dialog.dismiss()
+                }
+                setNegativeButton("否") { dialog, which ->
+                    dialog.dismiss()
+                }
+                show()
+            }
+
+            true
         }
         return holder
     }

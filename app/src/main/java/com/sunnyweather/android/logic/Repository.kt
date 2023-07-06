@@ -89,10 +89,11 @@ object Repository {
         Result.success(placeManage)
     }
 
-    fun deletePlace(place: PlaceManage) = fire(Dispatchers.IO){
+    fun deletePlaceByLngLat(lng: String, lat: String) = fire(Dispatchers.IO){
         Log.d("Repository", "PlaceManage: delete Place")
-        placeManageDao.deletePlace(place)
-        Result.success(0)
+        placeManageDao.deletePlaceByLngLat(lng, lat)
+        val placeList = placeManageDao.loadAllPlaces()
+        Result.success(placeList)
     }
 
     fun loadAllPlaces() = fire(Dispatchers.IO) {

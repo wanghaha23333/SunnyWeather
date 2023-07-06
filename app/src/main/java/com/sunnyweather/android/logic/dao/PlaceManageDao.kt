@@ -32,5 +32,5 @@ interface PlaceManageDao {
 
     // 根据经纬度删除某个城市
     @Query("delete from PlaceManage where lng = :lng and lat = :lat")
-    fun deletePlaceByLngLat(lng: String, lat: String): Int
+    fun deletePlaceByLngLat(lng: String, lat: String)
 }

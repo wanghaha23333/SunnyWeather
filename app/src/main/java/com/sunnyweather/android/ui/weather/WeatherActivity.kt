@@ -24,6 +24,7 @@ import com.sunnyweather.android.MainActivity
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.databinding.ActivityWeatherBinding
+import com.sunnyweather.android.logic.model.PlaceManage
 import com.sunnyweather.android.logic.model.Weather
 import com.sunnyweather.android.logic.model.getSky
 import java.text.SimpleDateFormat
@@ -83,6 +84,17 @@ class WeatherActivity : AppCompatActivity() {
                 viewModel.placeList = placeList
                 adapter = PlaceManageAdapter(this, viewModel.placeList!!)
                 binding.placeManageReV.adapter = adapter
+            }
+        }
+
+        viewModel.deletePlaceLivaData.observe(this) { result ->
+            val placeList = result.getOrNull()
+            if (placeList != null) {
+                Log.d("WeatherActivity", "delete places")
+                viewModel.placeList = placeList
+                adapter = PlaceManageAdapter(this, viewModel.placeList!!)
+                binding.placeManageReV.adapter = adapter
+                adapter.notifyDataSetChanged()
             }
         }
 

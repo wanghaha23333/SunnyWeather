@@ -42,7 +42,7 @@ class WeatherViewModel : ViewModel() {
 
     // 删除城市
     val deletePlaceLivaData = Transformations.switchMap(_deletePlaceLiveData) { placeManage ->
-        Repository.deletePlace(placeManage)
+        Repository.deletePlaceByLngLat(placeManage.lng, placeManage.lat)
     }
 
     fun deletePlace(place: PlaceManage) {
