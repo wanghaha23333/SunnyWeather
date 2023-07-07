@@ -39,63 +39,55 @@
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-<!--    <FrameLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="start"-->
-<!--        android:clickable="true"-->
-<!--        android:focusable="true"-->
-<!--        android:background="@color/design_default_color_primary">-->
-<!--        -->
-<!--        <fragment-->
-<!--            android:id="@+id/placeFragment"-->
-<!--            android:name="com.sunnyweather.android.ui.place.PlaceFragment"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginTop="25dp"/>-->
-<!--        -->
-<!--    </FrameLayout>-->
-
-    <RelativeLayout
-        android:id="@+id/managePlace"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#fff">
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@color/design_default_color_primary">
 
-        <TextView
-            android:id="@+id/placeManage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginStart="4dp"
-            android:text="@string/placeManage"
-            android:textSize="20sp"
-            android:textColor="@color/design_default_color_primary"
-            tools:ignore="RelativeOverlap" />
+        <include
+            android:id="@+id/includePlaceManage"
+            layout="@layout/place_manage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-        <Button
-            android:id="@+id/placeSearchBtn"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@id/placeManage"
-            android:background="@drawable/bg_search" />
+    </FrameLayout>
+    
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/managePlace"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="start"-->
+<!--        android:background="#fff">-->
 
-<!--        <FrameLayout-->
-<!--            android:id="@+id/searchFrameLayout"-->
+<!--        <TextView-->
+<!--            android:id="@+id/placeManage"-->
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@id/placeSearch">-->
+<!--            android:layout_marginTop="40dp"-->
+<!--            android:layout_marginStart="4dp"-->
+<!--            android:text="@string/placeManage"-->
+<!--            android:textSize="22sp"-->
+<!--            android:textColor="@color/design_default_color_primary"-->
+<!--            tools:ignore="RelativeOverlap" />-->
 
-<!--        </FrameLayout>-->
+<!--        <Button-->
+<!--            android:id="@+id/placeSearchBtn"-->
+<!--            android:layout_width="45dp"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_alignTop="@id/placeManage"-->
+<!--            android:background="@drawable/bg_search" />-->
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/placeManageReV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/placeManage"/>
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/placeManageReV"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_below="@id/placeManage"/>-->
 
-    </RelativeLayout>
+<!--    </RelativeLayout>-->
 
 </androidx.drawerlayout.widget.DrawerLayout>

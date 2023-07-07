@@ -2,24 +2,20 @@ package com.sunnyweather.android.ui.place
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sunnyweather.android.MainActivity
-import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
-import com.sunnyweather.android.databinding.FragmentPlaceBinding
+import com.sunnyweather.android.databinding.ActivityPlaceSearchBinding
 import com.sunnyweather.android.ui.weather.WeatherActivity
-class PlaceFragment : Fragment() {
+
+class PlaceSearchActivity : AppCompatActivity() {
 
     // 使用懒加载技术来获取 PlaceViewModel 的实例
     // 这种写法允许在整个类中随时使用 viewModel 这个变量，而不用关心它何时初始化、是否为空等前提条件
@@ -27,48 +23,37 @@ class PlaceFragment : Fragment() {
         ViewModelProvider(this).get(PlaceViewModel::class.java)
     }
 
-    private lateinit var binding: FragmentPlaceBinding
-
+    private lateinit var binding: ActivityPlaceSearchBinding
     private lateinit var adapter: PlaceAdapter
 
-    // 加载 fragment_place 布局
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        Log.d("PlaceFragment", "onCreateView load fragment_place")
-        binding = FragmentPlaceBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityPlaceSearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    @SuppressLint("NotifyDataSetChanged", "FragmentLiveDataObserve")
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        Log.d("PlaceFragment", "onViewStateRestored")
-
-        val strIntent = activity?.intent?.getStringExtra("searchPlace")
+        val strIntent = intent.getStringExtra("searchPlace")
         Log.d("PlaceFragment", "strIntent = $strIntent")
 
 //        if (strIntent != null) {
-            if (activity is MainActivity && viewModel.isPlaceSaved() && strIntent != "searchPlace") {
-                Log.d("PlaceFragment", "is Place Saved")
-                val place = viewModel.getSavedPlace()
-                Log.d("PlaceFragment", "is Place Saved, place is $place")
-                SunnyWeatherApplication.locationDes.apply {
-                    lng = place.location.lng
-                    lat = place.location.lat
-                }
-                val intent = Intent(context, WeatherActivity::class.java)
-                startActivity(intent)
-                activity?.finish()
-                return
+        if (viewModel.isPlaceSaved() && strIntent != "searchPlace") {
+            Log.d("PlaceFragment", "is Place Saved")
+            val place = viewModel.getSavedPlace()
+            Log.d("PlaceFragment", "is Place Saved, place is $place")
+            SunnyWeatherApplication.locationDes.apply {
+                lng = place.location.lng
+                lat = place.location.lat
             }
+            val intent = Intent(this, WeatherActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
 //        }
 
         // 给 RecyclerView 设置了 LayoutManager 和适配器
         // 并使用 PlaceViewModel 中的 placeList 集合作为数据源
-        val layoutManager = LinearLayoutManager(activity)
+        val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         adapter = PlaceAdapter(this, viewModel.placeList)
         binding.recyclerView.adapter = adapter
@@ -111,7 +96,7 @@ class PlaceFragment : Fragment() {
             } else {
 
                 // 如果数据为空 则说明发生了异常，此时弹出一个 Toast 提示，并打印具体的异常原因
-                Toast.makeText(activity, "未能查询到任何地点", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "未能查询到任何地点", Toast.LENGTH_SHORT).show()
                 result.exceptionOrNull()?.printStackTrace()
             }
         })

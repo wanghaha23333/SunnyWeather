@@ -17,11 +17,11 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sunnyweather.android.MainActivity
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.databinding.ActivityWeatherBinding
 import com.sunnyweather.android.logic.model.*
+import com.sunnyweather.android.ui.place.PlaceSearchActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,9 +47,9 @@ class WeatherActivity : AppCompatActivity() {
         decidePlaceOpen()
 
         val layoutManage = LinearLayoutManager(this)
-        binding.placeManageReV.layoutManager = layoutManage
+        binding.includePlaceManage.placeManageReV.layoutManager = layoutManage
         adapter = PlaceManageAdapter(this, viewModel.placeList)
-        binding.placeManageReV.adapter = adapter
+        binding.includePlaceManage.placeManageReV.adapter = adapter
 
         viewModel.weatherLiveData.observe(this) { result ->
             val weather = result.getOrNull()
@@ -73,7 +73,7 @@ class WeatherActivity : AppCompatActivity() {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        binding.placeManageReV.layoutManager = LinearLayoutManager(this)
+        binding.includePlaceManage.placeManageReV.layoutManager = LinearLayoutManager(this)
         viewModel.loadPlace()
 
         viewModel.loadPlaceLiveData.observe(this) { result ->
@@ -124,8 +124,8 @@ class WeatherActivity : AppCompatActivity() {
             }
         })
 
-        binding.placeSearchBtn.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+        binding.includePlaceManage.searchPlaceEntrance.setOnClickListener {
+            val intent = Intent(this, PlaceSearchActivity::class.java)
             intent.putExtra("searchPlace", "searchPlace")
             startActivity(intent)
             binding.drawerLayout.closeDrawers()
