@@ -95,9 +95,10 @@ class PlaceManageAdapter(val weatherActivity: WeatherActivity, val placeManageLi
     // 给 item 进行赋值
     override fun onBindViewHolder(holder: PlaceManageAdapter.ViewHolder, position: Int) {
         val placeManage = placeManageList[position]
+        val currentTemp = "${placeManage.temperature.toInt()}°C"
         holder.placeName.text = placeManage.place
         holder.skyInfo.text = placeManage.skyInfo
-        holder.temperature.text = placeManage.temperature.toString()
+        holder.temperature.text = currentTemp
     }
 
     override fun getItemCount() = placeManageList.size

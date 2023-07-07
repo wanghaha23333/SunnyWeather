@@ -82,8 +82,6 @@ class WeatherActivity : AppCompatActivity() {
                 Log.d("WeatherActivity", "load places")
                 viewModel.placeList.clear()
                 viewModel.placeList.addAll(placeList)
-//                adapter = PlaceManageAdapter(this, viewModel.placeList!!)
-//                binding.placeManageReV.adapter = adapter
                 adapter.notifyDataSetChanged()
             }
         }
