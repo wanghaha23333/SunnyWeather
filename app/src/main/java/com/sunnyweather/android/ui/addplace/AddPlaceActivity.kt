@@ -67,7 +67,8 @@ class AddPlaceActivity : AppCompatActivity() {
             val placeList = result.getOrNull()
             if (placeList != null) {
                 Log.d("AddPlaceActivity", "placeList is not null")
-                viewModel.placeList = placeList
+                viewModel.placeList.clear()
+                viewModel.placeList.addAll(placeList)
                 for (element in placeList) {
                     Log.d("AddPlaceActivity", "place:${element.id}, $element")
                 }
@@ -85,13 +86,13 @@ class AddPlaceActivity : AppCompatActivity() {
         }
 
         viewModel.addPlaceViewModel.observe(this) { result ->
-            val rowId = result.getOrNull()
-            if (rowId != null) {
-                viewModel.rowId = rowId
-                SunnyWeatherApplication.rowId = rowId
-                Log.d("AddPlaceActivity", "insertId = $rowId")
+            val placeList = result.getOrNull()
+            if (placeList != null) {
+//                viewModel.rowId = rowId
+//                SunnyWeatherApplication.rowId = rowId
+                Log.d("AddPlaceActivity", "insert success")
             } else {
-                Log.d("AddPlaceActivity", "insertId is null")
+                Log.d("AddPlaceActivity", "insert failed")
             }
         }
 
@@ -101,15 +102,12 @@ class AddPlaceActivity : AppCompatActivity() {
                 viewModel.addPlace()
             }
 
-            val place = Place(viewModel.placeName, Location(viewModel.locationLng, viewModel.locationLat), "")
-            viewModel.savePlace(place)
+            // 跳转前获取当前城市对应的经纬度
+//            SunnyWeatherApplication.rowId = viewModel.rowId
+            SunnyWeatherApplication.locationDes = Location(viewModel.locationLng, viewModel.locationLat)
+            Log.d("AddPlaceActivity", "SunnyWeatherApplication.rowId = ${SunnyWeatherApplication.locationDes}")
 
-            // 跳转前获取当前城市对应的 rowId
-            Thread.sleep(100)
-            SunnyWeatherApplication.rowId = viewModel.rowId
-            Log.d("AddPlaceActivity", "SunnyWeatherApplication.rowId = ${SunnyWeatherApplication.rowId}")
-
-            // 点击按钮可进入当前城市的详细天气界面，但是 WeatherActivity 的启动模式是 SingleTask，
+            // 点击按钮可进入当前城市的详细天气界面，但是 WeatherActivity 的启动模式是 SingleTask，无法通过intent传递信息
             val intent = Intent(this, WeatherActivity::class.java)
             startActivity(intent)
 //            finish()
@@ -153,7 +151,7 @@ class AddPlaceActivity : AppCompatActivity() {
             temperatureInfo.text = tempText
             binding.weatherForecast.forecastLayout.addView(view)
 
-            viewModel.skyInfo = sky.info
+            viewModel.skyInfo = getSky(realtime.skycon).info
             viewModel.temperature = realtime.temperature
         }
     }

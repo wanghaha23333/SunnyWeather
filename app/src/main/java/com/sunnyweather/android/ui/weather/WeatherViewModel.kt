@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.sunnyweather.android.logic.Repository
 import com.sunnyweather.android.logic.model.Location
+import com.sunnyweather.android.logic.model.Place
 import com.sunnyweather.android.logic.model.PlaceManage
 
 class WeatherViewModel : ViewModel() {
@@ -13,13 +14,15 @@ class WeatherViewModel : ViewModel() {
     private val locationLiveData = MutableLiveData<Location>()
     private val _loadPlaceLiveData = MutableLiveData<List<PlaceManage>>()
     private val _deletePlaceLiveData = MutableLiveData<PlaceManage>()
-    private val _findPlaceById = MutableLiveData<Long>()
+    private val _findPlaceByLngLat = MutableLiveData<Location>()
+    private val _updatePlaceViewModel = MutableLiveData<PlaceManage>()
 
     var locationLng = ""
     var locationLat = ""
     var placeName = ""
-    var placeList: List<PlaceManage> ?= null
-    var placeManage: PlaceManage ?= null
+    var skyInfo = ""
+    var temperature = 0.0f
+    var placeList = ArrayList<PlaceManage>()
 
     // 请求天气数据
     val weatherLiveData = Transformations.switchMap(locationLiveData) { location ->
@@ -49,11 +52,21 @@ class WeatherViewModel : ViewModel() {
         _deletePlaceLiveData.value = place
     }
 
+    // 添加城市
+    val updatePlaceViewModel = Transformations.switchMap(_updatePlaceViewModel) { placeManage ->
+        Repository.insertPlace(placeManage)
+    }
+    fun updatePlace() {
+        _updatePlaceViewModel.value = PlaceManage(placeName, locationLng, locationLat, skyInfo, temperature)
+    }
+
     // 根据id查询城市
-    val findPlaceById = Transformations.switchMap(_findPlaceById) { id ->
-        Repository.findPlaceById(id)
+    val findPlaceLiveData = Transformations.switchMap(_findPlaceByLngLat) { location ->
+        Repository.findPlaceByLngLat(location.lng, location.lat )
     }
-    fun findPlaceById(id: Long) {
-        _findPlaceById.value = id
+    fun findPlaceByLngLat(location: Location) {
+        _findPlaceByLngLat.value = location
     }
+
+    fun savePlace(place: Place) = Repository.savePlace(place)
 }

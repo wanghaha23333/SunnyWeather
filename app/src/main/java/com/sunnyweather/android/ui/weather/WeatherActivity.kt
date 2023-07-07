@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,8 +14,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,9 +21,7 @@ import com.sunnyweather.android.MainActivity
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.databinding.ActivityWeatherBinding
-import com.sunnyweather.android.logic.model.PlaceManage
-import com.sunnyweather.android.logic.model.Weather
-import com.sunnyweather.android.logic.model.getSky
+import com.sunnyweather.android.logic.model.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,10 +46,14 @@ class WeatherActivity : AppCompatActivity() {
         Log.d("WeatherActivity", "onCreate")
         decidePlaceOpen()
 
+        val layoutManage = LinearLayoutManager(this)
+        binding.placeManageReV.layoutManager = layoutManage
+        adapter = PlaceManageAdapter(this, viewModel.placeList)
+        binding.placeManageReV.adapter = adapter
+
         viewModel.weatherLiveData.observe(this) { result ->
             val weather = result.getOrNull()
             if (weather != null) {
-                Log.d("WeatherActivity", "${weather.daily.skycon}")
                 showWeatherInfo(weather)
             } else {
                 Toast.makeText(this, "无法获取天气信息", Toast.LENGTH_SHORT).show()
@@ -81,9 +80,11 @@ class WeatherActivity : AppCompatActivity() {
             val placeList = result.getOrNull()
             if (placeList != null) {
                 Log.d("WeatherActivity", "load places")
-                viewModel.placeList = placeList
-                adapter = PlaceManageAdapter(this, viewModel.placeList!!)
-                binding.placeManageReV.adapter = adapter
+                viewModel.placeList.clear()
+                viewModel.placeList.addAll(placeList)
+//                adapter = PlaceManageAdapter(this, viewModel.placeList!!)
+//                binding.placeManageReV.adapter = adapter
+                adapter.notifyDataSetChanged()
             }
         }
 
@@ -91,9 +92,21 @@ class WeatherActivity : AppCompatActivity() {
             val placeList = result.getOrNull()
             if (placeList != null) {
                 Log.d("WeatherActivity", "delete places")
-                viewModel.placeList = placeList
-                adapter = PlaceManageAdapter(this, viewModel.placeList!!)
-                binding.placeManageReV.adapter = adapter
+                viewModel.placeList.clear()
+                viewModel.placeList.addAll(placeList)
+                adapter.notifyDataSetChanged()
+            } else {
+                Toast.makeText(this, "无法删除该城市", Toast.LENGTH_SHORT).show()
+                result.exceptionOrNull()?.printStackTrace()
+            }
+        }
+
+        viewModel.updatePlaceViewModel.observe(this) { result ->
+            val placeList = result.getOrNull()
+            if (placeList != null) {
+                Log.d("WeatherActivity", "update places")
+                viewModel.placeList.clear()
+                viewModel.placeList.addAll(placeList)
                 adapter.notifyDataSetChanged()
             }
         }
@@ -101,7 +114,9 @@ class WeatherActivity : AppCompatActivity() {
         binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
 
-            override fun onDrawerOpened(drawerView: View) {}
+            override fun onDrawerOpened(drawerView: View) {
+                adapter.notifyDataSetChanged()
+            }
 
             override fun onDrawerStateChanged(newState: Int) {}
 
@@ -127,45 +142,30 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     fun decidePlaceOpen() {
-        Log.d("WeatherActivity", "insertId = ${SunnyWeatherApplication.rowId}")
-        if (SunnyWeatherApplication.rowId == -1L) {
-//            if (viewModel.locationLng.isEmpty()) {
-                viewModel.locationLng = intent.getStringExtra("location_lng") ?: ""
-//            }
-
-//            if (viewModel.locationLat.isEmpty()) {
-                viewModel.locationLat = intent.getStringExtra("location_lat") ?: ""
-//            }
-
-//            if (viewModel.placeName.isEmpty()) {
-                viewModel.placeName = intent.getStringExtra("place_name") ?: ""
-//            }
-            Log.d("WeatherActivity", "decidePlaceOpen placeName = ${viewModel.placeName}")
-            refreshWeather()
-        } else { // 说明是从 AddPlaceActivity 跳转过来的
-            Log.d("WeatherActivity", "from AddPlaceActivity")
-            viewModel.loadPlace()
-            viewModel.findPlaceById(SunnyWeatherApplication.rowId)
-            viewModel.findPlaceById.observe(this) { result ->
-                val placeManage = result.getOrNull()
-                if (placeManage != null) {
-                    Log.d("WeatherActivity", "place name = ${placeManage.place}")
-                    viewModel.locationLng = placeManage.lng
-                    viewModel.locationLat = placeManage.lat
-                    viewModel.placeName = placeManage.place
-                    refreshWeather()
-                }
+        Log.d("WeatherActivity", "Location = ${SunnyWeatherApplication.locationDes}")
+        viewModel.loadPlace()
+        viewModel.findPlaceByLngLat(SunnyWeatherApplication.locationDes)
+        viewModel.findPlaceLiveData.observe(this) { result ->
+            val placeManage = result.getOrNull()
+            if (placeManage != null) {
+                Log.d("WeatherActivity", "place name = ${placeManage.place}")
+                viewModel.locationLng = placeManage.lng
+                viewModel.locationLat = placeManage.lat
+                viewModel.placeName = placeManage.place
+                refreshWeather()
             }
         }
-
-        // 跳转结束后，将 insertId 置为初始值
-        SunnyWeatherApplication.rowId = -1L
     }
 
     private fun refreshWeather() {
         Log.d("WeatherActivity", "refreshWeather, place = ${viewModel.placeName}")
         viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
         binding.swipeRefresh.isRefreshing = true
+
+        // 备份当前城市
+        val place = Place(viewModel.placeName, Location(viewModel.locationLng, viewModel.locationLat), "")
+        viewModel.savePlace(place)
+        Log.d("WeatherActivity", "back up the place, place = $place")
     }
 
     private fun showWeatherInfo(weather: Weather) {
@@ -185,7 +185,6 @@ class WeatherActivity : AppCompatActivity() {
         binding.includeForecast.forecastLayout.removeAllViews()
         val days = daily.skycon.size
         for (i in 0 until days) {
-            Log.d("WeatherActivity", "i = $i")
             val skycon = daily.skycon[i]
             val temperature = daily.temperature[i]
             val view = LayoutInflater.from(this).inflate(R.layout.forecast_item,
@@ -195,7 +194,6 @@ class WeatherActivity : AppCompatActivity() {
             val skyInfo = view.findViewById<TextView>(R.id.skyInfo)
             val temperatureInfo = view.findViewById<TextView>(R.id.temperatureInfo)
             val simpleDataFormat = SimpleDateFormat("MM-dd", Locale.getDefault())
-            Log.d("WeatherActivity", "skycon = $skycon")
             val dataInfoStr = when(i) {
                 0 -> "今天 ${simpleDataFormat.format(skycon.date)}"
                 1 -> "明天 ${simpleDataFormat.format(skycon.date)}"
@@ -217,6 +215,11 @@ class WeatherActivity : AppCompatActivity() {
         binding.includeLifeIndex.ultravioletText.text = lifeIndex.ultraviolet[0].desc
         binding.includeLifeIndex.carWashingText.text = lifeIndex.carWashing[0].desc
         binding.weatherLayout.visibility = View.VISIBLE
+
+        // 填充当前 place 对应的 placeManage 对象
+        viewModel.skyInfo = getSky(realtime.skycon).info
+        viewModel.temperature = realtime.temperature
+        viewModel.updatePlace()
     }
 
     private fun getDayOfWeek(date: Date): String {

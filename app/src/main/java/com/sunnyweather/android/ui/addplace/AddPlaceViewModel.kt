@@ -22,11 +22,11 @@ class AddPlaceViewModel : ViewModel() {
     var placeName = ""
     var skyInfo = ""
     var temperature = 0.0f
-    var placeList: List<PlaceManage> ?= null
+    var placeList = ArrayList<PlaceManage>()
 //        fun isPlaceListInitialized() = ::placeList.isInitialized
 
     var isFound = false
-    var rowId = -1L
+//    var rowId = -1L
 
     // 添加城市
     val addPlaceViewModel = Transformations.switchMap(_addPlaceViewModel) { placeManage ->
@@ -58,10 +58,7 @@ class AddPlaceViewModel : ViewModel() {
     // 在城市列表中查找城市
     fun findPlace(placeManage: PlaceManage): Boolean {
         for (element in placeList!!) {
-            if (element.place == placeManage.place) {
-                rowId = element.id.toLong()
-                return true
-            }
+            if (element.place == placeManage.place) return true
         }
         return false
 //        return placeList?.contains(placeManage)
@@ -73,7 +70,4 @@ class AddPlaceViewModel : ViewModel() {
 //        }
 //        return false
 //    }
-
-    // 将当前城市备份
-    fun savePlace(place: Place) = Repository.savePlace(place)
 }

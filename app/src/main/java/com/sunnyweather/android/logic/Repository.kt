@@ -39,7 +39,6 @@ object Repository {
             val realtimeResponse = deferredRealtime.await()
             val dailyResponse = deferredDaily.await()
             if (realtimeResponse.status == "ok" && dailyResponse.status == "ok") {
-                Log.d("Repository", "${dailyResponse.result.daily.skycon}")
                 val weather = Weather(realtimeResponse.result.realtime,
                     dailyResponse.result.daily)
                 Result.success(weather)
@@ -66,21 +65,22 @@ object Repository {
 
 
     fun insertPlace(place: PlaceManage) = fire(Dispatchers.IO) {
-        Log.d("Repository", "PlaceManage: insert Place 1, place.lng = ${place.lng}, place.lat = ${place.lat}")
-        val rowId: Long
         val queryPlace = placeManageDao.queryPlaceByLngLat(place.lng, place.lat)
-        Log.d("Repository", "PlaceManage: insert Place 2")
         if (queryPlace == null) {
-            Log.d("Repository", "PlaceManage: insert Place 3")
-            rowId = placeManageDao.insertPlace(place)
+            placeManageDao.insertPlace(place)
         } else {
-            Log.d("Repository", "PlaceManage: insert Place 4")
             queryPlace.temperature = place.temperature
             queryPlace.skyInfo = place.skyInfo
-            rowId = placeManageDao.updatePlace(queryPlace).toLong()
+            placeManageDao.updatePlace(queryPlace).toLong()
         }
-        Log.d("Repository", "PlaceManage: insert id = $rowId")
-        Result.success(rowId)
+        val placeList = placeManageDao.loadAllPlaces()
+        Result.success(placeList)
+    }
+
+    fun findPlaceByLngLat(lng: String, lat: String) = fire(Dispatchers.IO) {
+        Log.d("Repository", "PlaceManage: findPlaceByLngLat")
+        val placeManage = placeManageDao.queryPlaceByLngLat(lng, lat)
+        Result.success(placeManage)
     }
 
     fun findPlaceById(id: Long) = fire(Dispatchers.IO) {
@@ -89,11 +89,18 @@ object Repository {
         Result.success(placeManage)
     }
 
-    fun deletePlaceByLngLat(lng: String, lat: String) = fire(Dispatchers.IO){
+    fun deletePlaceByLngLat(lng: String, lat: String) = fire(Dispatchers.IO) {
         Log.d("Repository", "PlaceManage: delete Place")
-        placeManageDao.deletePlaceByLngLat(lng, lat)
-        val placeList = placeManageDao.loadAllPlaces()
-        Result.success(placeList)
+        var placeList = placeManageDao.loadAllPlaces()
+        if (placeList.size <= 1) {
+            Result.failure(
+                RuntimeException("only one city, cannot be delete")
+            )
+        } else {
+            placeManageDao.deletePlaceByLngLat(lng, lat)
+            placeList = placeManageDao.loadAllPlaces()
+            Result.success(placeList)
+        }
     }
 
     fun loadAllPlaces() = fire(Dispatchers.IO) {

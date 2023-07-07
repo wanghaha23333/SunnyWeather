@@ -24,9 +24,6 @@ object SunnyWeatherNetwork {
                 override fun onResponse(call: Call<T>, response: Response<T>) {
                     val body = response.body()
                     if (body != null) {
-                        if (body is DailyResponse) {
-                            Log.d("SunnyWeatherNetwork", "${body.result.daily.skycon}")
-                        }
                         continuation.resume(body)
                     }
                     else continuation.resumeWithException(

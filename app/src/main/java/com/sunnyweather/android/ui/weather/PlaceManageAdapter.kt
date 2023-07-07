@@ -1,5 +1,7 @@
 package com.sunnyweather.android.ui.weather
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.app.AlertDialog
 import android.content.Intent
 import android.util.Log
@@ -17,6 +19,11 @@ class PlaceManageAdapter(val weatherActivity: WeatherActivity, val placeManageLi
     companion object {
         const val TAG = "PlaceManageAdapter"
     }
+
+    val scaleXDown = PropertyValuesHolder.ofFloat("scaleX", 0.9f)
+    val scaleYDown = PropertyValuesHolder.ofFloat("scaleY", 0.9f)
+    val scaleXUp = PropertyValuesHolder.ofFloat("scaleX", 1.0f)
+    val scaleYUp = PropertyValuesHolder.ofFloat("scaleY", 1.0f)
 
     inner class ViewHolder(binding: PlaceManageItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val placeName = binding.placeNamePm
@@ -39,16 +46,26 @@ class PlaceManageAdapter(val weatherActivity: WeatherActivity, val placeManageLi
             Log.d(TAG, "position = $position, placeName = ${placeManage.place}")
             Toast.makeText(parent.context, "position = $position, placeName = ${placeManage.place}", Toast.LENGTH_SHORT).show()
 
-            SunnyWeatherApplication.rowId = (position + 1).toLong()
+            SunnyWeatherApplication.locationDes.apply {
+                lng = placeManage.lng
+                lat = placeManage.lat
+            }
+
             val intent = Intent(parent.context, WeatherActivity::class.java)
             weatherActivity.startActivity(intent)
             weatherActivity.binding.drawerLayout.closeDrawers()
+
         }
 
         // 长按删除
         holder.itemView.setOnLongClickListener {
             val position = holder.adapterPosition
             val placeManage = placeManageList[position]
+
+            ObjectAnimator.ofPropertyValuesHolder(it, scaleXDown, scaleYDown).apply {
+                duration = 200
+                start()
+            }
 
             AlertDialog.Builder(parent.context).apply {
                 setTitle("删除地点")
@@ -57,9 +74,15 @@ class PlaceManageAdapter(val weatherActivity: WeatherActivity, val placeManageLi
                 setPositiveButton("是") { dialog, which ->
                     weatherActivity.viewModel.deletePlace(placeManage)
                     dialog.dismiss()
+                    it.scaleX = 1.0f
+                    it.scaleY = 1.0f
                 }
                 setNegativeButton("否") { dialog, which ->
                     dialog.dismiss()
+                    ObjectAnimator.ofPropertyValuesHolder(it, scaleXUp, scaleYUp).apply {
+                        duration = 200
+                        start()
+                    }
                 }
                 show()
             }
