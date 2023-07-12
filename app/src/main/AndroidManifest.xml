@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+
     <application
         android:name=".SunnyWeatherApplication"
         android:allowBackup="true"
@@ -30,11 +31,7 @@
             android:name=".ui.weather.WeatherActivity"
             android:exported="false"
             android:launchMode="singleTask" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false">
 
-        </activity>
     </application>
 
 </manifest>

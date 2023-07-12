@@ -54,7 +54,6 @@ class PlaceManageAdapter(val weatherActivity: WeatherActivity, val placeManageLi
             val intent = Intent(parent.context, WeatherActivity::class.java)
             weatherActivity.startActivity(intent)
             weatherActivity.binding.drawerLayout.closeDrawers()
-
         }
 
         // 长按删除

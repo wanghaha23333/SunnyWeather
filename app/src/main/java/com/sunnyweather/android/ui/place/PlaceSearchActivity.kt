@@ -11,6 +11,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.databinding.ActivityPlaceSearchBinding
 import com.sunnyweather.android.ui.weather.WeatherActivity
@@ -35,7 +36,6 @@ class PlaceSearchActivity : AppCompatActivity() {
         val strIntent = intent.getStringExtra("searchPlace")
         Log.d("PlaceFragment", "strIntent = $strIntent")
 
-//        if (strIntent != null) {
         if (viewModel.isPlaceSaved() && strIntent != "searchPlace") {
             Log.d("PlaceFragment", "is Place Saved")
             val place = viewModel.getSavedPlace()
@@ -49,7 +49,6 @@ class PlaceSearchActivity : AppCompatActivity() {
             finish()
             return
         }
-//        }
 
         // 给 RecyclerView 设置了 LayoutManager 和适配器
         // 并使用 PlaceViewModel 中的 placeList 集合作为数据源

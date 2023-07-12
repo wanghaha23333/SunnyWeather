@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -109,6 +110,12 @@ class WeatherActivity : AppCompatActivity() {
             }
         }
 
+        binding.includePlaceManage.searchPlaceEntrance.setOnClickListener {
+            val intent = Intent(this, PlaceSearchActivity::class.java)
+            intent.putExtra("searchPlace", "searchPlace")
+            startActivity(intent)
+        }
+
         binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
 
@@ -123,20 +130,11 @@ class WeatherActivity : AppCompatActivity() {
                 manager.hideSoftInputFromWindow(drawerView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
             }
         })
-
-        binding.includePlaceManage.searchPlaceEntrance.setOnClickListener {
-            val intent = Intent(this, PlaceSearchActivity::class.java)
-            intent.putExtra("searchPlace", "searchPlace")
-            startActivity(intent)
-            binding.drawerLayout.closeDrawers()
-        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d("WeatherActivity", "onResume")
-        decidePlaceOpen() // 需要定义一个变量，如果在 onCreate() 方法中执行过这个方法，onResume() 中就无须再执行这个方法
-//        refreshWeather()
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        decidePlaceOpen()
     }
 
     fun decidePlaceOpen() {

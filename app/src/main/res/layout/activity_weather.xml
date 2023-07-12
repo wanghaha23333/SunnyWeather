@@ -54,40 +54,5 @@
             android:layout_height="match_parent"/>
 
     </FrameLayout>
-    
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/managePlace"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="start"-->
-<!--        android:background="#fff">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/placeManage"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="40dp"-->
-<!--            android:layout_marginStart="4dp"-->
-<!--            android:text="@string/placeManage"-->
-<!--            android:textSize="22sp"-->
-<!--            android:textColor="@color/design_default_color_primary"-->
-<!--            tools:ignore="RelativeOverlap" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/placeSearchBtn"-->
-<!--            android:layout_width="45dp"-->
-<!--            android:layout_height="45dp"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_alignTop="@id/placeManage"-->
-<!--            android:background="@drawable/bg_search" />-->
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/placeManageReV"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_below="@id/placeManage"/>-->
-
-<!--    </RelativeLayout>-->
 
 </androidx.drawerlayout.widget.DrawerLayout>
