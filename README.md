@@ -3,7 +3,7 @@
 书籍《第一行代码 Android 第三版》 天气预报APP SunnyWeather。项目主要功能：查询城市天气，显示城市7天内的天气详情，以及当下所查询城市的天气状况  
 App 界面如下：
 
-<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlace.jpg" width=15%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/showSearchPlace.jpg" width=15%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weather.jpg" width=15%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlaceWeather.jpg" width=15%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weatherDetails.jpg" width=15%>
+<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlace.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/showSearchPlace.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weather.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlaceWeather.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weatherDetails.jpg" width=20%>
 
    #### 功能：
      1. 城市搜索功能：使用Retrofit发起网络请求并解析收到的json数据；使用RecyclerView显示相关城市
@@ -12,7 +12,7 @@ App 界面如下：
 
 ### 项目架构示意图：
 
-<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/SunnyWeather 架构示意图.jpg" width=40%>
+<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/SunnyWeather 架构示意图.jpg" width=45%>
 &nbsp;
 
 ### 新增城市管理功能
@@ -20,7 +20,7 @@ App 界面如下：
    
 新增功能对应界面：
 
-   <img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/AddPlace-Add.png" width=15%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/AddPlace-Open.png" width=15%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/PlaceManage.png" width=15%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/LongClickDelete.png" width=15%>
+   <img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/AddPlace-Add.png" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/AddPlace-Open.png" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/PlaceManage.png" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/LongClickDelete.png" width=20%>
    #### 功能点：
      1. 使用SQLite数据库对城市天气数据进行存储：使用Room关系对象映射
      2. 对城市列表中的城市进行添加/删除：对于已经存在于城市列表中的城市，可以直接进入该城市的天气详情界面
@@ -28,7 +28,7 @@ App 界面如下：
      
 ### 升级后项目架构示意图：
 
-<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/SunnyWeather 架构示意图(升级版).png" width=50%>
+<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/SunnyWeather 架构示意图(升级版).png" width=55%>
 
 &nbsp;
 
