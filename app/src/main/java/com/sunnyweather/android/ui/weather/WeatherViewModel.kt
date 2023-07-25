@@ -68,5 +68,14 @@ class WeatherViewModel : ViewModel() {
         _findPlaceByLngLat.value = location
     }
 
+    fun getPositionInPlaceList(placeName: String): Int {
+        for (i in 0 until placeList.size) {
+            if (placeList[i].place == placeName) {
+                return i
+            }
+        }
+        return -1
+    }
+
     fun savePlace(place: Place) = Repository.savePlace(place)
 }
