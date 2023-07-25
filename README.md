@@ -1,19 +1,11 @@
 # SunnyWeather
 ### 介绍  
 书籍《第一行代码 Android 第三版》 天气预报APP SunnyWeather。项目主要功能：查询城市天气，显示城市7天内的天气详情，以及当下所查询城市的天气状况  
-App 界面如下：
 
-<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlace.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/showSearchPlace.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weather.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlaceWeather.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weatherDetails.jpg" width=20%>
-
-   #### 功能：
-     1. 城市搜索功能：使用Retrofit发起网络请求并解析收到的json数据；使用RecyclerView显示相关城市
-     2. 获取实时天气：使用Retrofit发起网络请求，解析收到的json数据，并将数据进行展示
-     3. 获取天气预报：使用Retrofit发起网络请求，解析收到的json数据，并将数据进行展示
-
-### 项目架构示意图：
-
-<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/SunnyWeather 架构示意图.jpg" width=45%>
-&nbsp;
+### 新增滑动切换城市功能
+   可左右滑动在已添加的从城市中进行切换
+   新增功能对应界面：
+   
 
 ### 新增城市管理功能
    城市管理功能提供城市的添加与长按删除功能：搜索城市后进入城市天气预报界面，可选择是否将该城市添加到城市列表；城市列表支持长按删除（若表中只剩一个城市，则不能删除）
@@ -32,4 +24,18 @@ App 界面如下：
 
 &nbsp;
 
-#### 功能新增中...
+### 初始功能：搜索城市，显示城市实时天气信息及天气预报信息
+App 界面如下：
+
+<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlace.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/showSearchPlace.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weather.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlaceWeather.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weatherDetails.jpg" width=20%>
+
+   #### 功能：
+     1. 城市搜索功能：使用Retrofit发起网络请求并解析收到的json数据；使用RecyclerView显示相关城市
+     2. 获取实时天气：使用Retrofit发起网络请求，解析收到的json数据，并将数据进行展示
+     3. 获取天气预报：使用Retrofit发起网络请求，解析收到的json数据，并将数据进行展示
+
+### 项目架构示意图：
+
+<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/SunnyWeather 架构示意图.jpg" width=45%>
+&nbsp;
+
