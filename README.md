@@ -15,7 +15,7 @@
 
    <img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/PlaceSwitch.png" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/PlaceDetail.png" width=20%>&nbsp;&nbsp;&nbsp;
 
-    #### 功能点：
+   #### 功能点：
      1. ViewPager2 + Fragment + TabLayout 实现城市切换
      2. ViewPager2 动态添加、删除界面
 
@@ -48,7 +48,7 @@ App 界面如下：
 
 <img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlace.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/showSearchPlace.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weather.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlaceWeather.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weatherDetails.jpg" width=20%>
 
-   #### 功能：
+   #### 功能点：
      1. 城市搜索功能：使用Retrofit发起网络请求并解析收到的json数据；使用RecyclerView显示相关城市
      2. 获取实时天气：使用Retrofit发起网络请求，解析收到的json数据，并将数据进行展示
      3. 获取天气预报：使用Retrofit发起网络请求，解析收到的json数据，并将数据进行展示
