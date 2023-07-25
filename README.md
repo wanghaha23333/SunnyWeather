@@ -2,10 +2,27 @@
 ### 介绍  
 书籍《第一行代码 Android 第三版》 天气预报APP SunnyWeather。项目主要功能：查询城市天气，显示城市7天内的天气详情，以及当下所查询城市的天气状况  
 
+
+### UI界面调整中...
+&nbsp;
+&nbsp;
+&nbsp;
+
 ### 新增滑动切换城市功能
-   可左右滑动在已添加的从城市中进行切换
-   新增功能对应界面：
+   可左右滑动在已添加的城市中进行切换
    
+   新增功能对应界面：
+
+   <img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/PlaceSwitch.png" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/PlaceDetail.png" width=20%>&nbsp;&nbsp;&nbsp;
+
+    #### 功能点：
+     1. ViewPager2 + Fragment + TabLayout 实现城市切换
+     2. ViewPager2 动态添加、删除界面
+
+### 升级后项目架构示意图：
+<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/SunnyWeather 架构示意图2.0.png" width=55%>
+
+&nbsp;
 
 ### 新增城市管理功能
    城市管理功能提供城市的添加与长按删除功能：搜索城市后进入城市天气预报界面，可选择是否将该城市添加到城市列表；城市列表支持长按删除（若表中只剩一个城市，则不能删除）
@@ -24,7 +41,9 @@
 
 &nbsp;
 
-### 初始功能：搜索城市，显示城市实时天气信息及天气预报信息
+
+
+### 基本功能：搜索城市，显示城市实时天气信息及天气预报信息
 App 界面如下：
 
 <img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlace.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/showSearchPlace.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weather.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/searchPlaceWeather.jpg" width=20%>&nbsp;&nbsp;&nbsp;<img src="https://github.com/wanghaha23333/SunnyWeather/blob/main/AppImage/weatherDetails.jpg" width=20%>
