@@ -11,8 +11,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sunnyweather.android.R
-import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.databinding.ActivityPlaceSearchBinding
 import com.sunnyweather.android.ui.weather.WeatherActivity
 
@@ -34,17 +32,15 @@ class PlaceSearchActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val strIntent = intent.getStringExtra("searchPlace")
-        Log.d("PlaceFragment", "strIntent = $strIntent")
 
         if (viewModel.isPlaceSaved() && strIntent != "searchPlace") {
-            Log.d("PlaceFragment", "is Place Saved")
             val place = viewModel.getSavedPlace()
-            Log.d("PlaceFragment", "is Place Saved, place is $place")
-            SunnyWeatherApplication.locationDes.apply {
-                lng = place.location.lng
-                lat = place.location.lat
+            Log.d("PlaceSearchActivity", "is Place Saved, place is $place")
+
+            // 用于跳转 ViewPager 到指定界面
+            val intent = Intent(this, WeatherActivity::class.java).apply {
+                putExtra("place_name", place.name)
             }
-            val intent = Intent(this, WeatherActivity::class.java)
             startActivity(intent)
             finish()
             return
@@ -60,12 +56,12 @@ class PlaceSearchActivity : AppCompatActivity() {
         // 监听搜索框内容的变化情况
         // 每当搜索框中的内容发生了变化，就获取新的内容
         // 然后传递给 PlaceViewModel 的 searchPlaces() 方法，这样就可以发起搜索城市数据的网络请求了
-        Log.d("PlaceFragment", "add text changed Listener")
+        Log.d("PlaceSearchActivity", "add text changed Listener")
         binding.searchPlaceEdit.addTextChangedListener { editable ->
-            Log.d("PlaceFragment", "edit listener")
+            Log.d("PlaceSearchActivity", "edit listener")
             val content = editable.toString()
             if (content.isNotEmpty()) {
-                Log.d("PlaceFragment", "content is not empty")
+                Log.d("PlaceSearchActivity", "content is not empty")
                 viewModel.searchPlaces(content)
             } else {
 

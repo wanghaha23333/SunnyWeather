@@ -102,15 +102,12 @@ class AddPlaceActivity : AppCompatActivity() {
                 viewModel.addPlace()
             }
 
-            // 跳转前获取当前城市对应的经纬度
-//            SunnyWeatherApplication.rowId = viewModel.rowId
-            SunnyWeatherApplication.locationDes = Location(viewModel.locationLng, viewModel.locationLat)
-            Log.d("AddPlaceActivity", "SunnyWeatherApplication.rowId = ${SunnyWeatherApplication.locationDes}")
-
             // 点击按钮可进入当前城市的详细天气界面，但是 WeatherActivity 的启动模式是 SingleTask，无法通过intent传递信息
-            val intent = Intent(this, WeatherActivity::class.java)
+            val intent = Intent(this, WeatherActivity::class.java).apply {
+                putExtra("place_name", viewModel.placeName)
+            }
+            Log.d("AddPlaceActivity", "placeName = ${viewModel.placeName}")
             startActivity(intent)
-//            finish()
         }
     }
 

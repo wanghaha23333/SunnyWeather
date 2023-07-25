@@ -13,7 +13,7 @@ import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.databinding.PlaceManageItemBinding
 import com.sunnyweather.android.logic.model.PlaceManage
 
-class PlaceManageAdapter(val weatherActivity: WeatherActivity, val placeManageList: List<PlaceManage>) :
+class PlaceManageAdapter(val weatherFragment: WeatherFragment, val placeManageList: List<PlaceManage>) :
     RecyclerView.Adapter<PlaceManageAdapter.ViewHolder>() {
 
     companion object {
@@ -46,14 +46,11 @@ class PlaceManageAdapter(val weatherActivity: WeatherActivity, val placeManageLi
             Log.d(TAG, "position = $position, placeName = ${placeManage.place}")
             Toast.makeText(parent.context, "position = $position, placeName = ${placeManage.place}", Toast.LENGTH_SHORT).show()
 
-            SunnyWeatherApplication.locationDes.apply {
-                lng = placeManage.lng
-                lat = placeManage.lat
+            val intent = Intent(parent.context, WeatherActivity::class.java).apply {
+                putExtra("place_name", placeManage.place)
             }
-
-            val intent = Intent(parent.context, WeatherActivity::class.java)
-            weatherActivity.startActivity(intent)
-            weatherActivity.binding.drawerLayout.closeDrawers()
+            weatherFragment.startActivity(intent)
+            weatherFragment.binding.drawerLayout.closeDrawers()
         }
 
         // 长按删除
@@ -71,7 +68,7 @@ class PlaceManageAdapter(val weatherActivity: WeatherActivity, val placeManageLi
                 setMessage("是否删除地点：${placeManage.place}？")
                 setCancelable(false)
                 setPositiveButton("是") { dialog, which ->
-                    weatherActivity.viewModel.deletePlace(placeManage)
+                    weatherFragment.viewModel.deletePlace(placeManage)
                     dialog.dismiss()
                     it.scaleX = 1.0f
                     it.scaleY = 1.0f
@@ -85,7 +82,6 @@ class PlaceManageAdapter(val weatherActivity: WeatherActivity, val placeManageLi
                 }
                 show()
             }
-
             true
         }
         return holder
