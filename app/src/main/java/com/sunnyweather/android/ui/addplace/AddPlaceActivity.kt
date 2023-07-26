@@ -99,7 +99,12 @@ class AddPlaceActivity : AppCompatActivity() {
         binding.controlPlaceBtn.setOnClickListener {
             if (!viewModel.isFound) {
                 // 如果没有在城市列表中找到当前城市，点击按钮可将当前城市添加到城市列表中
-                viewModel.addPlace()
+                if (viewModel.placeList.size < 8) {
+                    viewModel.addPlace()
+                } else {
+                    Toast.makeText(this, "城市数量已达上限，如要添加新的城市，请先删除已有城市", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
             }
 
             // 点击按钮可进入当前城市的详细天气界面，但是 WeatherActivity 的启动模式是 SingleTask，无法通过intent传递信息

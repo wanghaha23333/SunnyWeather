@@ -107,7 +107,8 @@ class WeatherFragment(val location: Location) : Fragment() {
                 viewModel.placeList.addAll(placeList)
                 adapter.notifyDataSetChanged()
 
-                // 删除城市后，再次刷新 ViewPager，默认回到 Page 0
+                // 删除城市后，再次刷新 ViewPager，默认回到上次查看的城市页面
+                // 如果删除的正好是上次查看的城市页面，则默认回到第一个城市页面
                 val intent = Intent(context, WeatherActivity::class.java)
                 startActivity(intent)
             } else {

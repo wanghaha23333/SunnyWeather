@@ -61,6 +61,7 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("ResourceType")
     fun refreshViewPager(intent: Intent) {
         viewModel.loadPlace()
         viewModel.loadPlaceLiveData.observe(this) { result ->
@@ -87,8 +88,8 @@ class WeatherActivity : AppCompatActivity() {
 
                 // 将 TabLayout 与 ViewPager2 进行绑定
                 Log.d(TAG, "onCreate， 将 TabLayout 与 ViewPager2 进行绑定")
-                TabLayoutMediator(binding.tagLayout, binding.weatherPager) { tab, position ->
-                    tab.text = "Page $position"
+                TabLayoutMediator(binding.tabLayout, binding.weatherPager) { tab, position ->
+                    tab.setIcon(R.drawable.tablayout_selected)
                 }.attach()
             }
         }
