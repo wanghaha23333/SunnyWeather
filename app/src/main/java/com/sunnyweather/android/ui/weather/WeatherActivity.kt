@@ -82,7 +82,7 @@ class WeatherActivity : AppCompatActivity() {
 
                 Log.d(TAG, "refreshViewPager: position = $position")
                 binding.weatherPager.adapter = ViewPageAdapter(this)
-                if (position != -1) {
+                if (position != PLACE_NOT_FOUND) {
                     binding.weatherPager.setCurrentItem(position, false)
                 }
 

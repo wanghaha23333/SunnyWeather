@@ -23,6 +23,10 @@ class AddPlaceActivity : AppCompatActivity() {
         ViewModelProvider(this)[AddPlaceViewModel::class.java]
     }
 
+    companion object {
+        private const val MAX_PLACE_COUNT = 7 // 设置最大城市数量
+    }
+
     private lateinit var binding: ActivityAddplaceBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,8 +92,6 @@ class AddPlaceActivity : AppCompatActivity() {
         viewModel.addPlaceViewModel.observe(this) { result ->
             val placeList = result.getOrNull()
             if (placeList != null) {
-//                viewModel.rowId = rowId
-//                SunnyWeatherApplication.rowId = rowId
                 Log.d("AddPlaceActivity", "insert success")
             } else {
                 Log.d("AddPlaceActivity", "insert failed")
@@ -99,7 +101,7 @@ class AddPlaceActivity : AppCompatActivity() {
         binding.controlPlaceBtn.setOnClickListener {
             if (!viewModel.isFound) {
                 // 如果没有在城市列表中找到当前城市，点击按钮可将当前城市添加到城市列表中
-                if (viewModel.placeList.size < 8) {
+                if (viewModel.placeList.size < MAX_PLACE_COUNT) {
                     viewModel.addPlace()
                 } else {
                     Toast.makeText(this, "城市数量已达上限，如要添加新的城市，请先删除已有城市", Toast.LENGTH_SHORT).show()
